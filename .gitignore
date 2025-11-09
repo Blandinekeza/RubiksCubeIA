@@ -1,16 +1,54 @@
-# Compiled class file
+# ==============================
+# FICHIER : .gitignore
+# Projet : Rubik's Cube (Java)
+# Description :
+# Ce fichier indique à Git quels fichiers et dossiers NE DOIVENT PAS
+# être suivis (ignorés) dans le dépôt. Cela permet :
+#   - d'éviter d'envoyer des fichiers inutiles (logs, temporaires, etc.)
+#   - de garder le dépôt propre et léger
+#   - de protéger certains fichiers locaux (configurations, caches)
+# ==============================
+
+
+# ------------------------------
+# 🧩 1. FICHIERS COMPILES
+# Les fichiers .class sont générés automatiquement
+# lors de la compilation du code Java.
+# Ils ne doivent pas être versionnés car ils changent souvent.
+# ------------------------------
 *.class
 
-# Log file
+
+# ------------------------------
+# 🧾 2. FICHIERS DE LOG
+# Les fichiers .log contiennent des traces d'exécution du programme.
+# Ils sont utiles en local pour le débogage, mais inutiles sur Git.
+# ------------------------------
 *.log
 
-# BlueJ files
+
+# ------------------------------
+# 📘 3. FICHIERS BLUEJ (outil éducatif Java)
+# Si quelqu’un utilise BlueJ, ces fichiers .ctxt sont créés automatiquement.
+# On les ignore pour éviter d’encombrer le dépôt.
+# ------------------------------
 *.ctxt
 
-# Mobile Tools for Java (J2ME)
+
+# ------------------------------
+# 📱 4. OUTILS JAVA MOBILE (J2ME)
+# Dossier temporaire utilisé par Mobile Tools for Java.
+# ------------------------------
 .mtj.tmp/
 
-# Package Files #
+
+# ------------------------------
+# 📦 5. FICHIERS D’ARCHIVE ET PACKAGES
+# Les fichiers JAR, WAR, NAR, EAR, ZIP, TAR.GZ, RAR
+# sont des archives compilées du projet.
+# On ne versionne pas ces fichiers car ils peuvent être
+# régénérés à partir du code source.
+# ------------------------------
 *.jar
 *.war
 *.nar
@@ -19,6 +57,51 @@
 *.tar.gz
 *.rar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+
+# ------------------------------
+# ⚙️ 6. LOGS DE CRASH DE LA MACHINE VIRTUELLE JAVA
+# Ces fichiers apparaissent lorsqu’il y a un crash Java (erreur JVM).
+# Ils ne sont utiles que pour une analyse locale.
+# ------------------------------
 hs_err_pid*
 replay_pid*
+
+
+# ------------------------------
+# 🧰 7. DOSSIERS D’ENVIRONNEMENT ET OUTILS IDE
+# Ces fichiers sont créés automatiquement par les IDE (Eclipse, IntelliJ, VS Code…)
+# et contiennent des configurations locales.
+# Ils ne doivent pas être poussés sur GitHub.
+# ------------------------------
+# Eclipse
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+
+
+# ------------------------------
+# 💾 8. DOSSIERS TEMPORAIRES OU DE BUILD
+# Ces dossiers sont générés lors de la compilation du projet.
+# Ils peuvent être supprimés et régénérés à tout moment.
+# ------------------------------
+bin/
+build/
+target/
+
+
+# ------------------------------
+# 🔐 9. FICHIERS DE CONFIGURATION PERSONNELS
+# Si certains fichiers contiennent des mots de passe, tokens ou clés API,
+# on les liste ici pour éviter de les rendre publics.
+# ------------------------------
+*.env
+config.properties
+secret.txt
