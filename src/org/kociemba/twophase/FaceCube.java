@@ -37,21 +37,27 @@ class FaceCube {
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	FaceCube() {
+		/*
+		 * Ce constructeur initialise le cube dans l'état résolu en remplissant le tableau f créé au debut de la classe avec les couleurs.
+		 */
 		String s = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB";
 		for (int i = 0; i < 54; i++)
 			f[i] = Color.valueOf(s.substring(i, i + 1));
-
+		// A chaque iteration, on extrait un caractere de s et on le convertit en Color vu que on a defini le tableau comme une couleur 
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// Construct a facelet cube from a string
+	// Construit un facelet à partir d'un string 
 	FaceCube(String cubeString) {
 		for (int i = 0; i < cubeString.length(); i++)
 			f[i] = Color.valueOf(cubeString.substring(i, i + 1));
+		/*
+		 * Ce constructeur sert à créer un cube 3×3×3 dans n’importe quel état, à partir d’un string de 54 caractères.
+		 */
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-	// Gives string representation of a facelet cube
+	// Donne la representation en chaîne de caracteres d'un facelet
 	String to_String() {
 		String s = "";
 		for (int i = 0; i < 54; i++)

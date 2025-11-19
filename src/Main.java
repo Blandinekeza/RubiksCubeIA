@@ -3,6 +3,13 @@ import javax.swing.*;
 import java.awt.event.*;
 
 class Main extends JFrame implements KeyListener, MouseListener {
+	/*
+	 * La classe main est le point d'entree du code. Elle permet de lancer l'interface graphique. 
+	 * Elle cree les boutons (JButton[][] face)
+	 * Elle crée les controles(solve, clear, fill, Scramble)
+	 * Elle crée les evenements clavier/souris(KeyListener, MouseListener)
+	 * Elle instancie -> Solver.java
+	 */
 	Solver solver;
  	int faceSize = 49;
  	Color pickedColor = Color.lightGray; 
