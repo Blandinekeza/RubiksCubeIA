@@ -24,6 +24,10 @@ class CubieCube {
 
 	// definition complete du mouvement de U
 	private static Corner[] cpU = { UBR, URF, UFL, ULB, DFR, DLF, DBL, DRB };
+	/*
+	 * Ce tableau décrit dans quel etat va se retrouver les coins du haut une fois que on a fait tourner le haut dans le sens d'une horloge.
+	 * Car initialement, on a le tableau Corner définit de cette manière Corner[] cp = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
+	 */
 	private static byte[] coU = { 0, 0, 0, 0, 0, 0, 0, 0 };
 	private static Edge[] epU = { UB, UR, UF, UL, DR, DF, DL, DB, FR, FL, BL, BR };
 	private static byte[] eoU = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
