@@ -12,13 +12,13 @@ class CubieCube {
 	// tableau des permutations des coins d'un cube 
 	Corner[] cp = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
 
-	// tableaur des orientations d'un rubik's cube. Savoir qu'un rubik's cube peut avoir 3 orientations  
+	// tableau des orientations d'un coin d'un rubik's cube. Savoir qu'un coin d'un rubik's cube peut avoir 3 orientations  
 	byte[] co = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	// edge permutation
+	// tableau des permutations des arêtes
 	Edge[] ep = { UR, UF, UL, UB, DR, DF, DL, DB, FR, FL, BL, BR };
 
-	// edge orientation
+	// tableau des orientations d'une arête d'un rubik's cube. Savoir qu'une arête  d'un rubik's cube peut avoir 2 orientations
 	byte[] eo = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	// ************************************** Moves on the cubie level ***************************************************
