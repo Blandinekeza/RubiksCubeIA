@@ -21,33 +21,38 @@ class CubieCube {
 	// tableau des orientations d'une arête d'un rubik's cube. Savoir qu'une arête  d'un rubik's cube peut avoir 2 orientations
 	byte[] eo = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	// ************************************** Moves on the cubie level ***************************************************
 
+	// definition complete du mouvement de U
 	private static Corner[] cpU = { UBR, URF, UFL, ULB, DFR, DLF, DBL, DRB };
 	private static byte[] coU = { 0, 0, 0, 0, 0, 0, 0, 0 };
 	private static Edge[] epU = { UB, UR, UF, UL, DR, DF, DL, DB, FR, FL, BL, BR };
 	private static byte[] eoU = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+	// definition complete du mouvement de R
 	private static Corner[] cpR = { DFR, UFL, ULB, URF, DRB, DLF, DBL, UBR };
 	private static byte[] coR = { 2, 0, 0, 1, 1, 0, 0, 2 };
 	private static Edge[] epR = { FR, UF, UL, UB, BR, DF, DL, DB, DR, FL, BL, UR };
 	private static byte[] eoR = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+	// definition complete du mouvement de F
 	private static Corner[] cpF = { UFL, DLF, ULB, UBR, URF, DFR, DBL, DRB };
 	private static byte[] coF = { 1, 2, 0, 0, 2, 1, 0, 0 };
 	private static Edge[] epF = { UR, FL, UL, UB, DR, FR, DL, DB, UF, DF, BL, BR };
 	private static byte[] eoF = { 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0 };
 
+	// definition complete du mouvement de D
 	private static Corner[] cpD = { URF, UFL, ULB, UBR, DLF, DBL, DRB, DFR };
 	private static byte[] coD = { 0, 0, 0, 0, 0, 0, 0, 0 };
 	private static Edge[] epD = { UR, UF, UL, UB, DF, DL, DB, DR, FR, FL, BL, BR };
 	private static byte[] eoD = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+	// definition complete du mouvement de L
 	private static Corner[] cpL = { URF, ULB, DBL, UBR, DFR, UFL, DLF, DRB };
 	private static byte[] coL = { 0, 1, 2, 0, 0, 2, 1, 0 };
 	private static Edge[] epL = { UR, UF, BL, UB, DR, DF, FL, DB, FR, UL, DL, BR };
 	private static byte[] eoL = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
+	// definition complete du mouvement de B
 	private static Corner[] cpB = { URF, UFL, UBR, DRB, DFR, DLF, ULB, DBL };
 	private static byte[] coB = { 0, 0, 1, 2, 0, 0, 2, 1 };
 	private static Edge[] epB = { UR, UF, UL, BR, DR, DF, DL, BL, FR, FL, UB, DB };
@@ -219,19 +224,19 @@ class CubieCube {
 
 				// +++++++++++++++++++++not used in this implementation +++++++++++++++++++++++++++++++++++
 			} else if (oriA < 3 && oriB >= 3) // if cube b is in a mirrored
-			// state...
+				// state...
 			{
 				ori = (byte) (oriA + oriB);
 				if (ori >= 6)
 					ori -= 3; // the composition is a mirrored cube
 			} else if (oriA >= 3 && oriB < 3) // if cube a is an a mirrored
-			// state...
+				// state...
 			{
 				ori = (byte) (oriA - oriB);
 				if (ori < 3)
 					ori += 3; // the composition is a mirrored cube
 			} else if (oriA >= 3 && oriB >= 3) // if both cubes are in mirrored
-			// states...
+				// states...
 			{
 				ori = (byte) (oriA - oriB);
 				if (ori < 0)
@@ -366,7 +371,7 @@ class CubieCube {
 
 		int b = 0;
 		for (int j = 3; j > 0; j--)// compute the index b < 4! for the
-		// permutation in perm
+			// permutation in perm
 		{
 			int k = 0;
 			while (edge4[j].ordinal() != j + 8) {
@@ -423,7 +428,7 @@ class CubieCube {
 
 		int b = 0;
 		for (int j = 5; j > 0; j--)// compute the index b < 6! for the
-		// permutation in corner6
+			// permutation in corner6
 		{
 			int k = 0;
 			while (corner6[j].ordinal() != j) {
@@ -478,7 +483,7 @@ class CubieCube {
 
 		int b = 0;
 		for (int j = 5; j > 0; j--)// compute the index b < 6! for the
-		// permutation in edge6
+			// permutation in edge6
 		{
 			int k = 0;
 			while (edge6[j].ordinal() != j) {
@@ -550,7 +555,7 @@ class CubieCube {
 
 		int b = 0;
 		for (int j = 2; j > 0; j--)// compute the index b < 3! for the
-		// permutation in edge3
+			// permutation in edge3
 		{
 			int k = 0;
 			while (edge3[j].ordinal() != j) {
@@ -600,7 +605,7 @@ class CubieCube {
 
 		int b = 0;
 		for (int j = 2; j > 0; j--)// compute the index b < 3! for the
-		// permutation in edge3
+			// permutation in edge3
 		{
 			int k = 0;
 			while (edge3[j].ordinal() != UB.ordinal() + j) {
