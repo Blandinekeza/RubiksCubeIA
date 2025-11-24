@@ -9,10 +9,10 @@ class CubieCube {
 
 	// initialize to Id-Cube
 
-	// corner permutation
+	// tableau des permutations des coins d'un cube 
 	Corner[] cp = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
 
-	// corner orientation
+	// tableaur des orientations d'un rubik's cube. Savoir qu'un rubik's cube peut avoir 3 orientations  
 	byte[] co = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
 	// edge permutation
