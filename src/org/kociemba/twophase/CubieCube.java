@@ -20,17 +20,21 @@ class CubieCube {
 
 	// tableau des orientations d'une arête d'un rubik's cube. Savoir qu'une arête  d'un rubik's cube peut avoir 2 orientations
 	byte[] eo = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
+	
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	/*
+	 * Le tableau Corner décrit dans quelle position va se retrouver les coins du haut une fois que on a fait tourner le haut dans le sens d'une horloge.
+	 * Car initialement, on a le tableau Corner définit de cette manière Corner[] cp = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
+	 * Un mouvement ne change pas les pièces, il change seulement leur position : 
+	 * après le mouvement, la position i contient la pièce qui occupait une autre position auparavant.
+	 * coU indique l’effet du mouvement U sur l’orientation des coins : ici aucun coin n’est tourné, donc tout reste à 0.
+	 */
 
 	// definition complete du mouvement de U
-	private static Corner[] cpU = { UBR, URF, UFL, ULB, DFR, DLF, DBL, DRB };
-	/*
-	 * Ce tableau décrit dans quel etat va se retrouver les coins du haut une fois que on a fait tourner le haut dans le sens d'une horloge.
-	 * Car initialement, on a le tableau Corner définit de cette manière Corner[] cp = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
-	 */
-	private static byte[] coU = { 0, 0, 0, 0, 0, 0, 0, 0 };
-	private static Edge[] epU = { UB, UR, UF, UL, DR, DF, DL, DB, FR, FL, BL, BR };
-	private static byte[] eoU = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+	private static Corner[] cpU = { UBR, URF, UFL, ULB, DFR, DLF, DBL, DRB }; // permutation des coins U
+	private static byte[] coU = { 0, 0, 0, 0, 0, 0, 0, 0 }; // orientation des coins de U
+	private static Edge[] epU = { UB, UR, UF, UL, DR, DF, DL, DB, FR, FL, BL, BR }; // permutation des aretes de U
+	private static byte[] eoU = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //orientation des aretes de U
 
 	// definition complete du mouvement de R
 	private static Corner[] cpR = { DFR, UFL, ULB, URF, DRB, DLF, DBL, UBR };
