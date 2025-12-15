@@ -1,6 +1,10 @@
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.Arrays;
+
 
 class Main extends JFrame implements KeyListener, MouseListener {
 	/*
@@ -11,15 +15,15 @@ class Main extends JFrame implements KeyListener, MouseListener {
 	 * Elle instancie -> Solver.java
 	 */
 	Solver solver;
- 	int faceSize = 49;
- 	Color pickedColor = Color.lightGray; 
+	int faceSize = 49;
+	Color pickedColor = Color.lightGray; 
 
- 	JButton[][] face = new JButton[6][9];
- 	JButton[] colorPicker = new JButton[6]; 
- 	JButton solve, clear, fill, apply, randomScramble;
- 	JTextField moves;
- 	JLabel colorPickerLabel, message, randomScrambleLabel, movesLabel;
-	
+	JButton[][] face = new JButton[6][9];
+	JButton[] colorPicker = new JButton[6]; 
+	JButton solve, clear, fill, apply, randomScramble;
+	JTextField moves;
+	JLabel colorPickerLabel, message, randomScrambleLabel, movesLabel;
+
 	Main() {
 		getContentPane().setLayout(null); 
 		setTitle("Solve your 3 x 3 x 3");
@@ -28,11 +32,11 @@ class Main extends JFrame implements KeyListener, MouseListener {
 		setVisible(true);
 		addKeyListener(this);
 
- 		int[] xPos = {3, 3, 3, 9, 0, 6};
+		int[] xPos = {3, 3, 3, 9, 0, 6};
 		int[] yPos = {0, 6, 3, 3, 3, 3};
 
 		Color[] colors = {Color.white, Color.yellow, Color.green, Color.blue, new Color(255, 128, 0), Color.red, Color.lightGray};
-		
+
 		for(int i = 0; i < 6; i++) {
 			colorPicker[i] = new JButton();
 			colorPicker[i].setBackground(colors[i]);
@@ -105,7 +109,11 @@ class Main extends JFrame implements KeyListener, MouseListener {
 		solve.setOpaque(true);
 		solve.setForeground(new Color(26, 101, 26));
 		solve.setBorder(BorderFactory.createLineBorder(new Color(0, 230, 0), 2));
-		solve.addActionListener(event -> solver.solve());
+		solve.addActionListener(event -> {
+			solver.solve();
+
+		});
+
 		getContentPane().add(solve);
 
 		clear = new JButton("<html><b>Clear</b></html>");
@@ -235,5 +243,6 @@ class Main extends JFrame implements KeyListener, MouseListener {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> new Main());
+
 	}
 }

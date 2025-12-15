@@ -21,46 +21,69 @@ class CubieCube {
 	// tableau des orientations d'une arête d'un rubik's cube. Savoir qu'une arête  d'un rubik's cube peut avoir 2 orientations
 	byte[] eo = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 	
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	//++++++++++++++++++++++++++++++++++++++++++PERMUTATION ET ORIENTATION DES COINS ET ARETES+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	/*
-	 * Le tableau Corner décrit dans quelle position va se retrouver les coins du haut une fois que on a fait tourner le haut dans le sens d'une horloge.
-	 * Car initialement, on a le tableau Corner définit de cette manière Corner[] cp = { URF, UFL, ULB, UBR, DFR, DLF, DBL, DRB };
-	 * Un mouvement ne change pas les pièces, il change seulement leur position : 
-	 * après le mouvement, la position i contient la pièce qui occupait une autre position auparavant.
-	 * coU indique l’effet du mouvement U sur l’orientation des coins : ici aucun coin n’est tourné, donc tout reste à 0.
+	 * Chaque mouvement du cube (U, R, F, L, D, B) est défini par quatre tableaux :
+	 *
+	 * 1) cpX : Corner Permutation
+	 *    Ce tableau indique quelle pièce (coin) vient occuper la position i
+	 *    après le mouvement X. Un mouvement ne change jamais l’identité d’une
+	 *    pièce : seules les positions sont modifiées.
+	 *
+	 * 2) coX : Corner Orientation
+	 *    Ce tableau indique comment l’orientation des coins change suite au
+	 *    mouvement X. Si coX[i] = 0, l’orientation du coin déplacé vers i ne
+	 *    change pas. Si coX[i] = 1 ou 2, le coin subit une rotation (twist).
+	 *
+	 * 3) epX : Edge Permutation
+	 *    Même principe que cpX, mais pour les arêtes : epX[i] indique quelle
+	 *    arête vient en position i après le mouvement X.
+	 *
+	 * 4) eoX : Edge Orientation
+	 *    Indique si une arête est retournée (flip) lors du mouvement X.
+	 *    eoX[i] = 0 → orientation inchangée, eoX[i] = 1 → arête retournée.
+	 *
+	 * Important :
+	 * - Un mouvement modifie uniquement les positions des pièces,
+	 *   jamais leur identité.
+	 * - Certains mouvements modifient l’orientation (R, L, F, B),
+	 *   d’autres non (U, D).
+	 * - Ces tableaux permettent de simuler exactement l’effet d’un
+	 *   mouvement sur la structure CubieCube.
 	 */
 
-	// definition complete du mouvement de U
+
+	// permutation et orientation de U
 	private static Corner[] cpU = { UBR, URF, UFL, ULB, DFR, DLF, DBL, DRB }; // permutation des coins U
 	private static byte[] coU = { 0, 0, 0, 0, 0, 0, 0, 0 }; // orientation des coins de U
 	private static Edge[] epU = { UB, UR, UF, UL, DR, DF, DL, DB, FR, FL, BL, BR }; // permutation des aretes de U
 	private static byte[] eoU = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //orientation des aretes de U
 
-	// definition complete du mouvement de R
+	// permutation et orientation de R
 	private static Corner[] cpR = { DFR, UFL, ULB, URF, DRB, DLF, DBL, UBR };
 	private static byte[] coR = { 2, 0, 0, 1, 1, 0, 0, 2 };
 	private static Edge[] epR = { FR, UF, UL, UB, BR, DF, DL, DB, DR, FL, BL, UR };
 	private static byte[] eoR = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	// definition complete du mouvement de F
+	// permutation et orientation de F
 	private static Corner[] cpF = { UFL, DLF, ULB, UBR, URF, DFR, DBL, DRB };
 	private static byte[] coF = { 1, 2, 0, 0, 2, 1, 0, 0 };
 	private static Edge[] epF = { UR, FL, UL, UB, DR, FR, DL, DB, UF, DF, BL, BR };
 	private static byte[] eoF = { 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0 };
 
-	// definition complete du mouvement de D
+	//permutation et orientation de D
 	private static Corner[] cpD = { URF, UFL, ULB, UBR, DLF, DBL, DRB, DFR };
 	private static byte[] coD = { 0, 0, 0, 0, 0, 0, 0, 0 };
 	private static Edge[] epD = { UR, UF, UL, UB, DF, DL, DB, DR, FR, FL, BL, BR };
 	private static byte[] eoD = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	// definition complete du mouvement de L
+	//permutation et orientation de L
 	private static Corner[] cpL = { URF, ULB, DBL, UBR, DFR, UFL, DLF, DRB };
 	private static byte[] coL = { 0, 1, 2, 0, 0, 2, 1, 0 };
 	private static Edge[] epL = { UR, UF, BL, UB, DR, DF, FL, DB, FR, UL, DL, BR };
 	private static byte[] eoL = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-	// definition complete du mouvement de B
+	// permutation et orientation de B
 	private static Corner[] cpB = { URF, UFL, UBR, DRB, DFR, DLF, ULB, DBL };
 	private static byte[] coB = { 0, 0, 1, 2, 0, 0, 2, 1 };
 	private static Edge[] epB = { UR, UF, UL, BR, DR, DF, DL, BL, FR, FL, UB, DB };
@@ -278,7 +301,7 @@ class CubieCube {
 	// Multiply this CubieCube with another CubieCube b.
 	void multiply(CubieCube b) {
 		cornerMultiply(b);
-		// edgeMultiply(b);
+		edgeMultiply(b);
 	}
 
 	// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -755,4 +778,16 @@ class CubieCube {
 
 		return 0;// cube ok
 	}
+
+public CubieCube copy() {
+    CubieCube c = new CubieCube();
+
+    c.cp = this.cp.clone();
+    c.co = this.co.clone();
+    c.ep = this.ep.clone();
+    c.eo = this.eo.clone();
+
+    return c;
+}
+
 }

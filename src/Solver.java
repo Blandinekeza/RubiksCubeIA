@@ -58,7 +58,7 @@ class Solver {
 		below.put(3, left);
 
 		solved = new boolean[8];
-		
+
 		try {
 			BufferedReader read = new BufferedReader(new InputStreamReader(Solver.class.getResourceAsStream("F2L.txt")));
 			for(int i = 0; i < 41; i++) 
@@ -81,8 +81,11 @@ class Solver {
 	}
 
 	void solve() {
+
 		if(!loaded || !checkForCorrectInput())
 			return;
+		
+		long startTime = System.currentTimeMillis();
 
 		char[][] copy = new char[6][9];
 		for(int i = 0; i < 6; i++) {
@@ -91,16 +94,20 @@ class Solver {
 		}
 
 		solution.clear();
+
 		try {
 			solution.add("<html><b><u><font color = black>Solved:)<br></font></u><font color = blue>Cross:</font>");
 			solveCross();
+
 			solution.add("<br><font color = blue>F2L:</font>");
 			F2L();
+
 			solution.add("<br><font color = blue>OLL:</font>");
 			OLL();
+
 			solution.add("<br><font color = blue>PLL:</font>");
 			PLL();
-			// solution.add("</b></html>");
+
 		} catch(Exception e) {
 			message.setForeground(Color.red);
 			restore(copy);
@@ -109,6 +116,7 @@ class Solver {
 			return;
 		}
 
+		// 🔴 VÉRIFICATION ICI (AVANT animation)
 		if(!isSolved()) {
 			message.setForeground(Color.red);
 			restore(copy);
@@ -117,17 +125,24 @@ class Solver {
 			return;
 		}
 
+		// 🟢 ANIMATION ICI (APRÈS validation)
+
+		List<String> solutionCopy = new ArrayList<>(solution);
 		restore(copy);
-		solution.add("<br><br><font color = blue>Twophase: </font>" + getAdvanced());
+		clean(solutionCopy);
+		animateMoves(solutionCopy, 200, () -> {
+		    long endTime = System.currentTimeMillis();
+		    double timeSeconds = (endTime - startTime) / 1000.0;
 
-		update();
-		message.setForeground(new Color(0, 77, 26));
-		clean(solution);
-		StringBuilder sol = new StringBuilder();
-		for(int i = 0; i < solution.size(); i++)
-			sol.append(solution.get(i) + " ");
+		    message.setForeground(new Color(0, 77, 26));
+		    message.setText(String.format(
+		        "Cube résolu avec CFOP en %.2f secondes (%d mouvements)",
+		        timeSeconds,
+		        solutionCopy.size()
+		    ));
+		});
 
-		message.setText(sol.toString());
+		return;
 	}
 
 	String getAdvanced() {
@@ -172,7 +187,7 @@ class Solver {
 					message.setText("Fill whole cube.");
 					return false;
 				}
-				
+
 				if(count.containsKey(c[i][j])) {
 					if(count.get(c[i][j]) == 9) {
 						message.setText("Cube must have 9 faces of each color.");
@@ -243,7 +258,7 @@ class Solver {
 				temp = rightLayer.get(temp);
 				rotatationCount++;
 			}
-			
+
 			if(rotatationCount == 0) 
 				rotateClockWise(temp);
 
@@ -303,7 +318,7 @@ class Solver {
 				dPrime();
 				solution.add("D'");
 			}
-			
+
 			else if(rotatationCount == 2) {
 				rotateTwice(rightLayer.get(temp));
 				rotateClockWise(temp);
@@ -501,7 +516,7 @@ class Solver {
 			for(int j = 1; j < 8; j += 2) {
 				if(i != 0 && j == 7) 
 					continue;
-				
+
 				if(c[i][j] == a) {
 					if(i == 0) {
 						if(below.get(j)[1] == b)
@@ -603,7 +618,7 @@ class Solver {
 				if(flag) {
 					q = getEdgePosition(front[4], right[4]);
 					i = q[0]; j = q[1];
-					
+
 					if(i == 0) {
 						char[] temp = below.get(j);
 						while(temp[1] != temp[4]) {
@@ -689,25 +704,25 @@ class Solver {
 	void PLL() throws Exception {
 		if(!isPermuted()) {
 			outer:
-			for(int i = 0; i < 4; i++) {
-				char[][] temp = new char[6][9];
-				for(int k = 0; k < 6; k++) {
-					for(int l = 0; l < 9; l++)
-						temp[k][l] = c[k][l];
-				}
-
-				for(int j = 0; j < 21; j++) {
-					perform(pllAlgorithms[j]);
-					if(isPermuted()) {
-						for(String a: pllAlgorithms[j].split(" "))
-							solution.add(a);
-						break outer;
+				for(int i = 0; i < 4; i++) {
+					char[][] temp = new char[6][9];
+					for(int k = 0; k < 6; k++) {
+						for(int l = 0; l < 9; l++)
+							temp[k][l] = c[k][l];
 					}
-					restore(temp);
+
+					for(int j = 0; j < 21; j++) {
+						perform(pllAlgorithms[j]);
+						if(isPermuted()) {
+							for(String a: pllAlgorithms[j].split(" "))
+								solution.add(a);
+							break outer;
+						}
+						restore(temp);
+					}
+					u();
+					solution.add("U");
 				}
-				u();
-				solution.add("U");
-			}
 		}
 		for(int i = 0; i < 4 && front[1] != front[4]; i++){
 			u();
@@ -799,7 +814,7 @@ class Solver {
 			} else if(input[i].equals("l'")) {
 				wideLPrime();
 			} else if(input[i].equals("r")) {
-			 	wideR();
+				wideR();
 			} else if(input[i].equals("r'")) {
 				wideRPrime();
 			} else if(input[i].equals("u2")) {
@@ -882,7 +897,7 @@ class Solver {
 
 		for(int i = 0; i < 23; i++) 
 			scramble.add(moves[rand.nextInt(18)]);
-		
+
 		clean(scramble);
 		StringBuilder s = new StringBuilder();
 		for(int i = 0; i < scramble.size(); i++)
@@ -1335,4 +1350,21 @@ class Solver {
 	void z2() { 
 		wideF2(); b2();
 	}	
+
+	void animateMoves(List<String> moves, int delayMs, Runnable onFinish) {
+		new Thread(() -> {
+			try {
+				for (String move : moves) {
+					perform(move);          // applique UN mouvement
+					Thread.sleep(delayMs);  // pause pour voir l’animation
+				}
+				if (onFinish != null) {
+					onFinish.run();         // action à la fin (optionnelle)
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}).start();
+	}
+
 }
