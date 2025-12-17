@@ -396,10 +396,4 @@ public class RubikIA {
 		return lancerAStar("A* + hMalPlaces", c.copy(), this::hMalPlaces, false);
 	}
 
-	/**
-	 * Lance l’algorithme Greedy avec l’heuristique des pièces mal placées
-	 */
-	public Result joueur6_Greedy_MalPlacees(CubieCube c) {
-		return lancerAStar("Greedy + hMalPlaces", c.copy(), this::hMalPlaces, true);
-	}
 }

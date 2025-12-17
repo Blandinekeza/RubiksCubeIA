@@ -116,7 +116,7 @@ class Solver {
 			return;
 		}
 
-		// 🔴 VÉRIFICATION ICI (AVANT animation)
+		// Vérification ici avant l'animation
 		if(!isSolved()) {
 			message.setForeground(Color.red);
 			restore(copy);
@@ -125,7 +125,7 @@ class Solver {
 			return;
 		}
 
-		// 🟢 ANIMATION ICI (APRÈS validation)
+		// On fait l'animation maintenant 
 
 		List<String> solutionCopy = new ArrayList<>(solution);
 		restore(copy);
@@ -904,7 +904,7 @@ class Solver {
 			s.append(scramble.get(i) + " ");
 
 		perform(s.toString());
-		lastRandomScramble.setText("Last Random Scramble: " + s);
+
 		update2();
 	}
 

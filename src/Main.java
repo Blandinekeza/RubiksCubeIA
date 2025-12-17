@@ -6,7 +6,13 @@ import java.util.List;
 import java.util.Arrays;
 
 
+/*
+ * Classe principale de l’application.
+ * Elle gère l’interface graphique du Rubik’s Cube.
+ * Elle affiche le cube, les boutons et capte les interactions utilisateur.
+ */
 class Main extends JFrame implements KeyListener, MouseListener {
+
 	/*
 	 * La classe main est le point d'entree du code. Elle permet de lancer l'interface graphique. 
 	 * Elle cree les boutons (JButton[][] face)
@@ -14,16 +20,35 @@ class Main extends JFrame implements KeyListener, MouseListener {
 	 * Elle crée les evenements clavier/souris(KeyListener, MouseListener)
 	 * Elle instancie -> Solver.java
 	 */
+
+	// Instance du solveur qui contient toute la logique du cube
 	Solver solver;
+
+	// Taille d’un carré du cube à l’écran
 	int faceSize = 49;
+
+	// Couleur actuellement sélectionnée par l’utilisateur
 	Color pickedColor = Color.lightGray; 
 
+	// Représentation graphique du cube (6 faces de 9 cases)
 	JButton[][] face = new JButton[6][9];
+
+	// Boutons servant à choisir une couleur
 	JButton[] colorPicker = new JButton[6]; 
+
+	// Boutons de contrôle de l’application
 	JButton solve, clear, fill, apply, randomScramble;
+
+	// Champ de texte pour entrer des mouvements manuellement
 	JTextField moves;
+
+	// Labels d’information pour l’interface
 	JLabel colorPickerLabel, message, randomScrambleLabel, movesLabel;
 
+	/*
+	 * Constructeur de la fenêtre principale.
+	 * Initialise la fenêtre, les boutons, le cube et les événements.
+	 */
 	Main() {
 		getContentPane().setLayout(null); 
 		setTitle("Solve your 3 x 3 x 3");
@@ -32,49 +57,76 @@ class Main extends JFrame implements KeyListener, MouseListener {
 		setVisible(true);
 		addKeyListener(this);
 
+		// Positions des faces du cube dans la fenêtre
 		int[] xPos = {3, 3, 3, 9, 0, 6};
 		int[] yPos = {0, 6, 3, 3, 3, 3};
 
-		Color[] colors = {Color.white, Color.yellow, Color.green, Color.blue, new Color(255, 128, 0), Color.red, Color.lightGray};
+		// Couleurs utilisées pour représenter les faces
+		Color[] colors = {
+			Color.white, 
+			Color.yellow, 
+			Color.green, 
+			Color.blue, 
+			new Color(255, 128, 0), 
+			Color.red, 
+			Color.lightGray
+		};
 
+		// Création des boutons de sélection de couleur
 		for(int i = 0; i < 6; i++) {
 			colorPicker[i] = new JButton();
 			colorPicker[i].setBackground(colors[i]);
 			colorPicker[i].setOpaque(true);
 			colorPicker[i].setName(Integer.toString(i));
-			colorPicker[i].setBounds(faceSize * 7 + faceSize / 5 * 4 * i, faceSize, faceSize / 5 * 4, faceSize / 5 * 4);
+			colorPicker[i].setBounds(
+				faceSize * 7 + faceSize / 5 * 4 * i, 
+				faceSize, 
+				faceSize / 5 * 4, 
+				faceSize / 5 * 4
+			);
 			colorPicker[i].addKeyListener(this);
-			colorPicker[i].addActionListener(event -> pickedColor = colors[Integer.parseInt(((JButton)event.getSource()).getName())]);
+
+			// Lors d’un clic, la couleur choisie devient la couleur active
+			colorPicker[i].addActionListener(event ->
+				pickedColor = colors[
+					Integer.parseInt(((JButton)event.getSource()).getName())
+				]
+			);
 			getContentPane().add(colorPicker[i]);
 		} 
 
+		// Label indiquant la zone de sélection de couleur
 		colorPickerLabel = new JLabel("Color Picker");
 		colorPickerLabel.setFont(new Font("Monospace Regular", Font.PLAIN, 13));
 		colorPickerLabel.setBounds(faceSize * 7, faceSize / 2, faceSize * 4, faceSize * 2 / 3);
 		getContentPane().add(colorPickerLabel);
 
-		randomScrambleLabel = new JLabel();
-		randomScrambleLabel.setFont(new Font("Monospace Regular", Font.PLAIN, 14));
-		randomScrambleLabel.setBounds(10, faceSize * 10 + 30, faceSize * 12 - 10, faceSize * 2 / 3);
-		getContentPane().add(randomScrambleLabel);
-
+		// Label utilisé pour afficher des messages à l’utilisateur
 		message = new JLabel();
 		message.setFont(new Font("Monospace Bold", Font.PLAIN, 14));
 		message.setBounds(10, faceSize * 11, faceSize * 12, faceSize * 3);
 		getContentPane().add(message);
 
+		// Création graphique des 6 faces du cube
 		for(int i = 0; i < 6; i++) {
 			for(int j = 0; j < 9; j++) {
 				face[i][j] = new JButton();
 				face[i][j].setBackground(Color.lightGray);
 				face[i][j].setOpaque(true);
-				face[i][j].setBounds(faceSize * xPos[i] + faceSize * (j % 3), faceSize * yPos[i] + faceSize * (j / 3), faceSize, faceSize);
+				face[i][j].setBounds(
+					faceSize * xPos[i] + faceSize * (j % 3), 
+					faceSize * yPos[i] + faceSize * (j / 3), 
+					faceSize, 
+					faceSize
+				);
 				getContentPane().add(face[i][j]);
 			}
 		}
 
+		// Initialisation du solveur avec les composants graphiques
 		solver = new Solver(face, randomScrambleLabel, message, colors);
 
+		// Ajout des événements clavier et souris sur chaque case du cube
 		for(int i = 0; i < 6; i++) {
 			for(int j = 0; j < 9; j++) {
 				face[i][j].addKeyListener(this);
@@ -85,10 +137,12 @@ class Main extends JFrame implements KeyListener, MouseListener {
 			}
 		}
 
+		// Noms des faces affichés au centre de chaque face
 		String[] faceNames = {"U", "D", "F", "B", "L", "R"};
 		for(int i = 0; i < 6; i++) 
 			face[i][4].setText(faceNames[i]);
 
+		// Bouton permettant de générer un mélange aléatoire
 		randomScramble = new JButton("<html><b>Scramble</b></html>");
 		randomScramble.setFont(new Font("Monospace Regular", Font.PLAIN, 13));
 		randomScramble.setForeground(new Color(0, 0, 128));
@@ -102,6 +156,7 @@ class Main extends JFrame implements KeyListener, MouseListener {
 		});
 		getContentPane().add(randomScramble);
 
+		// Bouton lançant la résolution automatique du cube
 		solve = new JButton("<html><b>SOLVE</b></html>");
 		solve.setFont(new Font("Monospace Regular", Font.PLAIN, 13));
 		solve.setBounds(faceSize * 10, faceSize * 7, 2 * faceSize, faceSize * 3 / 4);
@@ -111,11 +166,10 @@ class Main extends JFrame implements KeyListener, MouseListener {
 		solve.setBorder(BorderFactory.createLineBorder(new Color(0, 230, 0), 2));
 		solve.addActionListener(event -> {
 			solver.solve();
-
 		});
-
 		getContentPane().add(solve);
 
+		// Bouton permettant de réinitialiser le cube
 		clear = new JButton("<html><b>Clear</b></html>");
 		clear.setBorder(BorderFactory.createLineBorder(Color.lightGray, 2));
 		clear.setForeground(new Color(77, 77, 77));
@@ -130,6 +184,7 @@ class Main extends JFrame implements KeyListener, MouseListener {
 		});
 		getContentPane().add(clear);
 
+		// Bouton permettant de remplir automatiquement le cube
 		fill = new JButton("<html><b>Fill</b></html>");
 		fill.setForeground(new Color(0, 0, 128));
 		fill.setBorder(BorderFactory.createLineBorder(new Color(51, 173, 255), 2));
@@ -143,28 +198,12 @@ class Main extends JFrame implements KeyListener, MouseListener {
 			randomScrambleLabel.setText("");
 		});
 		getContentPane().add(fill);
-
-		movesLabel = new JLabel("Enter moves here (or use keyboard inputs)");
-		movesLabel.setFont(new Font("Monospace Regular", Font.PLAIN, 13));
-		movesLabel.setBounds(10, faceSize * 9 + 10, faceSize * 8, faceSize * 2 / 3);
-		getContentPane().add(movesLabel);
-
-		moves = new JTextField();
-		moves.setFont(new Font("Monospace Regular", Font.PLAIN, 13));
-		moves.setBounds(10, faceSize * 10 - 10, faceSize * 10 - 10, faceSize * 2 / 3);
-		getContentPane().add(moves);
-
-		apply = new JButton("<html><b>Apply</b></html>");
-		apply.setFont(new Font("Monospace Regular", Font.PLAIN, 13));
-		apply.setBorder(BorderFactory.createLineBorder(new Color(255, 194, 102), 2));
-		apply.setForeground(new Color(230, 92, 0));
-		apply.setBounds(faceSize * 10, faceSize * 10 - 10, 2 * faceSize, faceSize * 2 / 3);
-		apply.addKeyListener(this);
-		apply.setOpaque(true);
-		apply.addActionListener(event -> solver.perform(moves.getText()));
-		getContentPane().add(apply);
 	}
 
+	/*
+	 * Gestion des entrées clavier.
+	 * Chaque touche correspond à un mouvement du Rubik’s Cube.
+	 */
 	@Override
 	public void keyPressed(KeyEvent event) {
 		char key = event.getKeyChar();
@@ -224,25 +263,21 @@ class Main extends JFrame implements KeyListener, MouseListener {
 		}
 	}
 
+	// Gestion du clic souris pour garder le focus clavier
 	@Override
 	public void mouseClicked(MouseEvent event) {
 		solve.requestFocusInWindow();
 	}
-	@Override
-	public void mouseExited(MouseEvent event) {}
-	@Override
-	public void mouseEntered(MouseEvent event) {}
-	@Override
-	public void mouseReleased(MouseEvent event) {}
-	@Override
-	public void mousePressed(MouseEvent event) {}
-	@Override
-	public void keyReleased(KeyEvent event) {}
-	@Override
-	public void keyTyped(KeyEvent event) {}
 
+	@Override public void mouseExited(MouseEvent event) {}
+	@Override public void mouseEntered(MouseEvent event) {}
+	@Override public void mouseReleased(MouseEvent event) {}
+	@Override public void mousePressed(MouseEvent event) {}
+	@Override public void keyReleased(KeyEvent event) {}
+	@Override public void keyTyped(KeyEvent event) {}
+
+	// Point d’entrée du programme
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> new Main());
-
 	}
 }
