@@ -123,6 +123,16 @@ Le programme final permet de :
 
 ---
 
+## Exécution du programme
+
+Le projet peut être exécuté de deux manières :
+
+- **Interface graphique** : lancer la classe `Main.java` pour visualiser et résoudre automatiquement un Rubik’s Cube 3×3×3.
+- **Mode console** : lancer la classe `CompetitionIA.java` pour comparer les algorithmes de résolution sur un même scramble et afficher les résultats dans la console.
+
+Ces deux modes sont séparés afin de distinguer la visualisation du cube et l’analyse des performances des algorithmes.
+
+---
 ## Licence
 
 Projet universitaire   
