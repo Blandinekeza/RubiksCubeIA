@@ -34,7 +34,7 @@ Après avoir compris le code, nous avons implémenté et adapté plusieurs algor
 
 - IDA* avec différentes heuristiques
 - A* avec différentes heuristiques
-- Greedy Search
+
 
 Ces algorithmes ont été implementés de manière à pouvoir être comparés entre eux sur un même scramble  
 
@@ -103,8 +103,6 @@ Les algorithmes suivants ont été implémentés et testés dans le projet :
 - heuristique Manhattan  
 - heuristique des pièces mal placées  
 
-### Greedy Search
-- heuristique des pièces mal placées  
 
 Ces algorithmes sont comparés selon plusieurs critères de performance  
 
